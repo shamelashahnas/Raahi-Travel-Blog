@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ destination.destination_name }} - Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        header img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            box-sizing: border-box;
+            width: 60%;
+            color: white;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 15px;
+                top: 60%;
+            }
+            .header-content h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-content {
+                padding: 10px;
+                position: static;
+                transform: none;
+                margin: 0 auto;
+                background-color: rgba(0, 0, 0, 0.7);
+                animation: none;
+            }
+            .header-content h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .description-container {
+            margin: 30px auto;
+            padding: 50px;
+            background-color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .description-container p {
+            font-size: 1.2rem;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: #333;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            object-fit: cover;
+            height: 200px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        {% if destination.cover_image %}
+            <img src="{{ url_for('uploaded_file', filename=destination.cover_image) }}" alt="Cover Image">
+            <div class="header-overlay"></div>
+            <div class="header-content">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <h1>{{ destination.destination_name }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="container">
+                <h1>{{ destination.destination_name }}</h1>
+            </div>
+        {% endif %}
+    </header>
+    <div class="description-container">
+        <p>{{ destination.description }}</p>
+    </div>
+    <main class="container">
+        <section>
+            <div class="row">
+                {% for blog in blogs %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            {% if blog.images %}
+                                {% set cover_image = blog.images[0].url %}
+                                <img src="{{ url_for('uploaded_file', filename=cover_image) }}" alt="Blog Cover Image" class="card-img-top img-fluid">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/default_cover.png') }}" alt="Default Cover Image" class="card-img-top img-fluid">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.blog_title }}</h5>
+                                <p class="card-text">{{ blog.content[:150] }}...</p>
+                                <a href="{{ url_for('blog_detail', blog_id=blog.blog_id) }}" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+    <footer class="container">
+        <!-- Add your footer content here -->
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

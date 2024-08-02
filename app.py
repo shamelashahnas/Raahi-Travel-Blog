@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 from werkzeug.utils import secure_filename
-
+from flask import send_from_directory
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/raahi_travelblog'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -116,41 +116,77 @@ def userregister():
 def add_destination():
     name = request.form['destination_name']
     description = request.form['description']
-    cover_image = request.files.get('cover_image')  # Use .get() to avoid KeyError
+    cover_image = request.files.get('cover_image')
 
     if cover_image and cover_image.filename:
         image_filename = secure_filename(cover_image.filename)
-        cover_image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+        try:
+            cover_image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+        except Exception as e:
+            # Handle the error (log it, notify the user, etc.)
+            print(f"Error saving image: {e}")
+            return redirect(url_for('error_page'))  # Redirect to an error page or show an error message
     else:
         image_filename = None
 
-    new_destination = Destination(destination_name=name, description=description, cover_image=image_filename)
-    db.session.add(new_destination)
-    db.session.commit()
+    try:
+        new_destination = Destination(destination_name=name, description=description, cover_image=image_filename)
+        db.session.add(new_destination)
+        db.session.commit()
+    except Exception as e:
+        # Handle the error (log it, notify the user, etc.)
+        print(f"Error saving destination: {e}")
+        return redirect(url_for('error_page'))  # Redirect to an error page or show an error message
+
     return redirect(url_for('dashboard'))
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/add_blog', methods=['POST'])
 def add_blog():
     title = request.form['blog_title']
     content = request.form['content']
     destination_id = request.form['destination_id']
-    images = request.files.getlist('images')  # Get list of image files
+
+    # Retrieve subheadings and descriptions from the form
+    subheadings_titles = request.form.getlist('subheading[]')
+    subheadings_descriptions = request.form.getlist('subheading_description[]')
 
     # Create the new blog
     new_blog = Blog(blog_title=title, content=content, destination_id=destination_id)
     db.session.add(new_blog)
     db.session.commit()
 
-    # Save images and add to database
-    for image in images:
-        if image and image.filename:
-            image_filename = secure_filename(image.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
-            image.save(image_path)
-            new_image = Image(url=image_filename, blog_id=new_blog.blog_id)
-            db.session.add(new_image)
+    # Save subheadings and descriptions
+    for title, description in zip(subheadings_titles, subheadings_descriptions):
+        if title and description:
+            new_subheading = Subheading(
+                subheading_title=title,
+                description=description,
+                blog_id=new_blog.blog_id
+            )
+            db.session.add(new_subheading)
 
     db.session.commit()
+    return redirect(url_for('dashboard'))
+
+@app.route('/add_image', methods=['POST'])
+def add_image():
+    image_file = request.files.get('image_file')
+    description = request.form['image_description']
+    associated_blog = request.form.get('associated_blog')
+    associated_destination = request.form.get('associated_destination')
+
+    if image_file and image_file.filename:
+        image_filename = secure_filename(image_file.filename)
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+        image_file.save(image_path)
+
+        new_image = Image(url=image_filename, description=description, blog_id=associated_blog, destination_id=associated_destination)
+        db.session.add(new_image)
+        db.session.commit()
+    
     return redirect(url_for('dashboard'))
 
 @app.route('/add_itinerary', methods=['POST'])
@@ -163,6 +199,7 @@ def add_itinerary():
     db.session.commit()
     return redirect(url_for('dashboard'))
 
+
 @app.route('/add_travelessential', methods=['POST'])
 def add_travelessential():
     name = request.form['travelessential_name']
@@ -172,18 +209,43 @@ def add_travelessential():
     db.session.commit()
     return redirect(url_for('dashboard'))
 
+
 @app.route('/dashboard', endpoint='dashboard')
 def admin_dashboard():
     destinations = Destination.query.all()
-    return render_template('dashboard.html', destinations=destinations)
+    blogs = Blog.query.all()  # Fetch all blogs from the database
+    return render_template('dashboard.html', destinations=destinations, blogs=blogs)
 
 @app.route('/', endpoint='home')
 def home():
     return render_template('home.html')
-
 @app.route('/destinations', endpoint='destinations')
 def destinations():
-    return render_template('destinations.html')
+    destinations = Destination.query.all()  # Fetch all destinations from the database
+    return render_template('destinations.html', destinations=destinations)
+
+@app.route('/destination/<int:destination_id>')
+def destination_detail(destination_id):
+    # Fetch the destination by ID
+    destination = Destination.query.get_or_404(destination_id)
+    
+    # Fetch blogs related to this destination
+    blogs = Blog.query.filter_by(destination_id=destination_id).all()
+    
+    return render_template('destination_details.html', destination=destination, blogs=blogs)
+
+@app.route('/blog/<int:blog_id>')
+def blog_detail(blog_id):
+    # Fetch the blog by ID
+    blog = Blog.query.get_or_404(blog_id)
+    
+    # Fetch related subheadings
+    subheadings = Subheading.query.filter_by(blog_id=blog_id).all()
+    
+    # Fetch related images
+    images = Image.query.filter_by(blog_id=blog_id).all()
+    
+    return render_template('blog.html', blog=blog, subheadings=subheadings, images=images)
 
 if __name__ == '__main__':
     app.run(debug=True)

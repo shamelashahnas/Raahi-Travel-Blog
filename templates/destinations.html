@@ -148,70 +148,22 @@ footer h5 {
 Whether you're dreaming of a tropical escape, a cultural deep-dive, or a thrilling adventure off the beaten path, our stories and tips are here to guide you. From bustling cityscapes to serene landscapes, we aim to inspire your next journey with every post.
  So pack your bags, grab your camera, and let's make every travel dream a reality together!</h5><br><br>
   <div class="row justify-content-center">
+    {% for destination in destinations %}
     <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/iceland1.jpg')}}" class="card-img-top img-fluid" alt="Iceland">
-          <div class="overlay-text">Iceland</div>
-        </div>
-      </div>
+        <div class="card">
+            <div class="image-overlay-container">
+                <a href="{{ url_for('destination_detail', destination_id=destination.destination_id) }}">
+                    <img src="{{ url_for('uploaded_file', filename=destination.cover_image) }}" class="card-img-top img-fluid" alt="{{ destination.destination_name }}">
+                    <div class="overlay-text">
+                        {{ destination.destination_name }}
+                    </div>
+                </a>
+            </div>
+        </div>  
     </div>
-    <!-- <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/switzerland1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
-          <div class="overlay-text">Switzerland</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/uk1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
-          <div class="overlay-text">United Kingdom</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/usa1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
-          <div class="overlay-text">USA</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/canada1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
-          <div class="overlay-text">Canada</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/japan1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
-          <div class="overlay-text">Japan</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/korea1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
-          <div class="overlay-text">Korea </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-overlay-container">
-          <img src="{{ url_for('static', filename='images/netherland1.jpg')}}" class="card-img-top img-fluid" alt="Netherland">
-          <div class="overlay-text">Netherland</div>
-        </div>
-      </div>
-    </div> -->
+    {% endfor %}
+    
+
   </div>
 </div>
 <footer class=" text-white mt-4">

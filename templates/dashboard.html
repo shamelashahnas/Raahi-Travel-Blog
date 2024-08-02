@@ -57,6 +57,10 @@
                 <a class="nav-link" id="blogs-tab" data-toggle="tab" href="#blogs" role="tab" aria-controls="blogs" aria-selected="false">Blogs</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="false">Images</a>
+            </li>
+            
+            <li class="nav-item">
                 <a class="nav-link" id="itineraries-tab" data-toggle="tab" href="#itineraries" role="tab" aria-controls="itineraries" aria-selected="false">Itineraries</a>
             </li>
             <li class="nav-item">
@@ -87,12 +91,12 @@
                     </div>
                 </div>
             </div>
-           <!-- Inside the Blogs Tab -->
+          <!-- Inside the Blogs Tab -->
 <div class="tab-pane fade" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
     <div class="card">
         <div class="card-header">Add New Blog</div>
         <div class="card-body">
-            <form method="POST" action="/add_blog" enctype="multipart/form-data">
+            <form method="POST" action="/add_blog">
                 <div class="form-group">
                     <label for="blog_title">Blog Title</label>
                     <input type="text" class="form-control" id="blog_title" name="blog_title" required>
@@ -104,14 +108,11 @@
                 <div class="form-group">
                     <label for="destination_id">Destination</label>
                     <select class="form-control" id="destination_id" name="destination_id">
+                        <option value="" disabled selected>Select Destination</option>
                         {% for destination in destinations %}
                             <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
                         {% endfor %}
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="images">Images</label>
-                    <input type="file" class="form-control-file" id="images" name="images" multiple>
                 </div>
                 
                 <!-- Subheadings Section -->
@@ -131,6 +132,46 @@
         </div>
     </div>
 </div>
+<!-- Images Tab -->
+<div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+    <div class="card">
+        <div class="card-header">Add New Image</div>
+        <div class="card-body">
+            <form method="POST" action="/add_image" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="image_file">Image File</label>
+                    <input type="file" class="form-control-file" id="image_file" name="image_file" required>
+                </div>
+                <div class="form-group">
+                    <label for="image_description">Description</label>
+                    <textarea class="form-control" id="image_description" name="image_description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="associated_blog">Associated Blog</label>
+                    <select class="form-control" id="associated_blog" name="associated_blog">
+                        <option value="" disabled selected>Select the Blog</option>
+                        {% for blog in blogs %}
+                        
+                            <option value="{{ blog.blog_id }}">{{ blog.blog_title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="associated_destination">Associated Destination</label>
+                    <select class="form-control" id="associated_destination" name="associated_destination">
+                        <option value="" disabled selected>Select the Destination</option>
+                        {% for destination in destinations %}
+                          
+                            <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Image</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 
             <!-- Itineraries Tab -->
             <div class="tab-pane fade" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
@@ -141,7 +182,10 @@
                             <div class="form-group">
                                 <label for="destination_id_itinerary">Destination</label>
                                 <select class="form-control" id="destination_id_itinerary" name="destination_id">
-                                    <!-- Add destination options dynamically from the database -->
+                                    {% for destination in destinations %}
+                                    <option value="">Select the Destination</option>
+                                    <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
+                                {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
@@ -190,8 +234,10 @@
             container.appendChild(entry);
         }
     </script>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 </body>
 </html>
