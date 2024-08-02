@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Blog</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lugrasimo&family=Playball&display=swap" rel="stylesheet">
+  <title>Home Page</title>
+  <style>
+    /* Custom styles */
+
+     .homebg{
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('{{ url_for("static", filename="images/raahi_cvr.png") }}');
+      background-repeat: no-repeat;
+      background-size: cover;
+      
+      color: #1e0101;
+    }
+    .content {
+      text-align: center;
+      z-index: 1;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      margin-left: auto; 
+      margin-right: auto; 
+    }
+    .navbar-nav .nav-link {
+      color: #000000;
+      font-size: 20px;
+    }
+ 
+    .navbar-nav .nav-link:hover {
+      color: #ce9d22 !important;
+    }
+    .search-bar {
+      margin-left: auto;
+    }
+    .logo {
+      font-family: "Lugrasimo", cursive;
+    font-weight: 600;
+    font-size: 33px;
+    
+}.aboutme{
+  font-size: 24px;
+}
+button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.button {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+  width: 240px;
+  border-radius: 9999rem;
+  background: #aae0e6;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  & > span.text {
+    color: #121212;
+    width: 100%;
+    text-align: left;
+    padding-block: 12px;
+    padding-left: 24px;
+    z-index: 2;
+    transition: all 200ms ease;
+  }
+
+  & > div.overlay {
+    color: #ededed;
+    width: 48px;
+    height: calc(100% - 2px);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 12px;
+    border-radius: inherit;
+    background: #06495f;
+    position: absolute;
+    right: 1px;
+    z-index: 1;
+    transition: all 400ms ease;
+  }
+
+  &:is(:hover, :focus) {
+    & > span.text {
+      color: #ededed;
+    }
+    & > div.overlay {
+      width: calc(100% - 2px);
+      transition: width 200ms ease;
+    }
+  }
+}
+.image-overlay-container {
+  position: relative;
+  width: 100%;
+  height: 300px; 
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  width: 100%;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  font-size: 23px;
+  font-weight: 600;
+  padding: 10px 0; 
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card {
+  margin: 20px;
+}
+.overlayy {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transition: .5s ease;
+  background-color: rgba(51, 75, 83, 0.893);
+  opacity: 0;
+}.card:hover .overlayy {
+  opacity: 1;
+}
+
+.text2 {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+footer {
+  background: #0f363f;
+  padding: 20px 0;
+}
+
+footer a.text-white {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+footer a.text-white:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+footer p, footer ul {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+footer h5 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+  </style>
+</head>
+<body>
+<div class="container-fluid homebg ">
+  <nav class="navbar navbar-expand-lg navbar-dark ">
+    <div class="container">
+      <a class="navbar-brand logo mx-auto" href="#" style="color: rgba(4, 50, 94, 0.772);">raahi</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('home') }}" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('destinations') }}" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Destinations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Contact</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0 search-bar">
+          <input class="form-control mr-sm-2"  type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <br><br><br><br><br><br><br><br><br>
+
+  <div class="content">
+    <h1>Capturing moments that echo through time..</h1>
+    <p>Explore amazing destinations, get travel tips, and plan your next adventure with us.</p>
+  </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+
+
+<div class="container-fluid"><br><br><br>
+  <div class="row">
+      <div class="col-md-6 " style="margin-left: 30px; margin-right: 20px;">
+          <h3>About Me</h3><br><br>
+          <p class="aboutme ">Hey there, fellow wanderers! I'm Raahi, the spirited explorer fueling this travel blog with tales of my global escapades and heartfelt insights into the beauty of our planet.<br>
+              Born with an insatiable curiosity and a passion for adventure, I've spent my life chasing sunsets, embracing cultures, and seeking out hidden gems in every corner of the world.From bustling metropolises to serene natural wonders, I believe that every destination has its own unique story waiting to be uncovered.
+              <br>My journey into the world of travel began as a young girl, captivated by the pages of atlases and daydreaming of far-off lands. As I grew older, my wanderlust only intensified, leading me to embark on solo expeditions and spontaneous journeys that have shaped the person I am today.<br>
+              Through this blog, I aim to inspire and empower fellow travelers to step out of their comfort zones, explore new horizons, and create unforgettable memories of their own. Whether you're a seasoned globetrotter or a first-time adventurer, I'm here to share my experiences, offer practical advice, and ignite your wanderlust with captivating stories and breathtaking photography.<br>
+              Join me as I traverse the globe, one destination at a time, in search of moments that will leave a lasting imprint on my soul. Together, let's embark on a journey of discovery, connection, and endless exploration. After all, as the saying goes, "Life is a journey, not a destination." So why not make it an extraordinary one?
+              <br>Here's to embracing the unknown, chasing dreams, and living life with open arms. Welcome to the world of Raahi!</p>
+<br>
+              <button class="button">
+                <span class="text">READ MORE</span>
+                <div class="overlay">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right">
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+      </div>
+      <div class="col-md-5 " style="margin-top: 100px;">
+          <img src="{{ url_for('static', filename='images/image2.jpg')}}" class="img-fluid" alt="Raahi">
+      </div>
+  </div><br><br>
+</div>
+<div class="container-fluid">
+  <h1 class="justify-content-center align-content-center d-flex" style="color:#06495f;">What are you looking for?</h1><br><br>
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="image-overlay-container">
+          <a href="{{ url_for('destinations') }}"><img src="{{ url_for('static', filename='images/destinations.jpg')}}" class="card-img-top img-fluid" alt="Iceland"></a>
+          <div class="overlay-text">Destinations</div>
+          <a href="{{ url_for('destinations') }}"><div class="overlayy">
+            <div class="text2">Explore the Corners of the World with Us</div>
+          </div></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/adventures.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">Itineraries</div>
+          <div class="overlayy">
+            <div class="text2">Wild Journeys, Memorable Stories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/essential.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">Travel Essentials</div>
+          <div class="overlayy">
+            <div class="text2">Essentials for Every Journey</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+<footer class=" text-white mt-4">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <h5>About Raahi</h5>
+        <p>A passionate explorer sharing journeys and experiences from around the globe. Join me to discover new places and cultures.</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Home</a></li>
+          <li><a href="#" class="text-white">Destinations</a></li>
+          <li><a href="#" class="text-white">Blog</a></li>
+          <li><a href="#" class="text-white">About</a></li>
+          <li><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Contact Info</h5>
+        <ul class="list-unstyled">
+          <li>Email: raahi@gmail.com</li>
+          <li>Phone: +91 9526011865</li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-center mt-2">
+        <p>&copy; 2024 Raahi Travel Blog. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

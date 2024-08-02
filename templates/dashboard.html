@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Admin Dashboard - Raahi Travel Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('{{ url_for("static", filename="images/raahi_cvr.png") }}');
+            background-size: cover;
+            color: #fff;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.281);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #455b72;
+            color: white;
+            border: none;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            color: #ddd;
+        }
+        .nav-tabs .nav-link:hover {
+            color: #fff;
+        }
+        .form-control, .form-control-file, .form-control-textarea, .btn-primary {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #455b72;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #7e93aa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4"> raahi</h2>
+        <ul class="nav nav-tabs" id="dashboardTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="destinations-tab" data-toggle="tab" href="#destinations" role="tab" aria-controls="destinations" aria-selected="true">Destinations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="blogs-tab" data-toggle="tab" href="#blogs" role="tab" aria-controls="blogs" aria-selected="false">Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="itineraries-tab" data-toggle="tab" href="#itineraries" role="tab" aria-controls="itineraries" aria-selected="false">Itineraries</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="travelessentials-tab" data-toggle="tab" href="#travelessentials" role="tab" aria-controls="travelessentials" aria-selected="false">Travel Essentials</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="dashboardTabContent">
+            <!-- Destinations Tab -->
+            <div class="tab-pane fade show active" id="destinations" role="tabpanel" aria-labelledby="destinations-tab">
+                <div class="card">
+                    <div class="card-header">Add New Destination</div>
+                    <div class="card-body">
+                        <form method="POST" action="/add_destination" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="destination_name">Destination Name</label>
+                                <input type="text" class="form-control" id="destination_name" name="destination_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="cover_image">Cover Image</label>
+                                <input type="file" class="form-control-file" id="cover_image" name="cover_image">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Destination</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+           <!-- Inside the Blogs Tab -->
+<div class="tab-pane fade" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
+    <div class="card">
+        <div class="card-header">Add New Blog</div>
+        <div class="card-body">
+            <form method="POST" action="/add_blog" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="blog_title">Blog Title</label>
+                    <input type="text" class="form-control" id="blog_title" name="blog_title" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="destination_id">Destination</label>
+                    <select class="form-control" id="destination_id" name="destination_id">
+                        {% for destination in destinations %}
+                            <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="images">Images</label>
+                    <input type="file" class="form-control-file" id="images" name="images" multiple>
+                </div>
+                
+                <!-- Subheadings Section -->
+                <div class="form-group">
+                    <label>Subheadings</label>
+                    <div id="subheadings-container">
+                        <div class="subheading-entry">
+                            <input type="text" class="form-control mb-2" name="subheading[]" placeholder="Subheading">
+                            <textarea class="form-control mb-2" name="subheading_description[]" rows="2" placeholder="Subheading Description"></textarea>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="addSubheading()">+</button>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add Blog</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+            <!-- Itineraries Tab -->
+            <div class="tab-pane fade" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
+                <div class="card">
+                    <div class="card-header">Add New Itinerary</div>
+                    <div class="card-body">
+                        <form method="POST" action="/add_itinerary">
+                            <div class="form-group">
+                                <label for="destination_id_itinerary">Destination</label>
+                                <select class="form-control" id="destination_id_itinerary" name="destination_id">
+                                    <!-- Add destination options dynamically from the database -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="days">Days</label>
+                                <input type="number" class="form-control" id="days" name="days" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description_itinerary">Description</label>
+                                <textarea class="form-control" id="description_itinerary" name="description" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Itinerary</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Travel Essentials Tab -->
+            <div class="tab-pane fade" id="travelessentials" role="tabpanel" aria-labelledby="travelessentials-tab">
+                <div class="card">
+                    <div class="card-header">Add New Travel Essential</div>
+                    <div class="card-body">
+                        <form method="POST" action="/add_travelessential">
+                            <div class="form-group">
+                                <label for="travelessential_name">Travel Essential Name</label>
+                                <input type="text" class="form-control" id="travelessential_name" name="travelessential_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="travelessential_description">Description</label>
+                                <textarea class="form-control" id="travelessential_description" name="travelessential_description" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Travel Essential</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function addSubheading() {
+            var container = document.getElementById('subheadings-container');
+            var entry = document.createElement('div');
+            entry.classList.add('subheading-entry');
+            entry.innerHTML = `
+                <input type="text" class="form-control mb-2" name="subheading[]" placeholder="Subheading">
+                <textarea class="form-control mb-2" name="subheading_description[]" rows="2" placeholder="Subheading Description"></textarea>
+            `;
+            container.appendChild(entry);
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

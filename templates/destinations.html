@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Blog</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lugrasimo&family=Playball&display=swap" rel="stylesheet">
+  <title>Destinations</title>
+  <style>
+    /* Custom styles */
+
+     .homebg{
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('{{ url_for("static", filename="images/destinations.jpg") }}');
+      background-repeat: no-repeat;
+      background-size: cover;
+      
+      color: #1e0101;
+    }
+    .content {
+      text-align: center;
+      z-index: 1;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      margin-left: auto; 
+      margin-right: auto; 
+    }
+    .navbar-nav .nav-link {
+      color: #000000;
+      font-size: 20px;
+    }
+ 
+    .navbar-nav .nav-link:hover {
+      color: #ce9d22 !important;
+    }
+    .search-bar {
+      margin-left: auto;
+    }
+    .logo {
+      font-family: "Lugrasimo", cursive;
+    font-weight: 600;
+    font-size: 33px;
+    
+}
+.image-overlay-container {
+  position: relative;
+  width: 100%;
+  height: 250px; 
+}
+
+.overlay-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: white;
+  text-align: center;
+  padding: 10px 0; 
+  font-size: 23px;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card {
+  margin: 20px;
+}
+
+footer {
+  background: #0f363f;
+  padding: 20px 0;
+}
+
+footer a.text-white {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+footer a.text-white:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+footer p, footer ul {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+footer h5 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+  </style>
+</head>
+<body>
+<div class="container-fluid homebg ">
+  <nav class="navbar navbar-expand-lg navbar-dark ">
+    <div class="container">
+      <a class="navbar-brand logo mx-auto" href="#" style="color: rgba(4, 50, 94, 0.772);">raahi</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Destinations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Contact</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0 search-bar">
+          <input class="form-control mr-sm-2"  type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <br><br><br><br><br><br><br><br><br>
+
+  <div class="content">
+    <h1>Destinations</h1>
+  </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+
+
+<div class="container-fluid"><br>
+  <h5 class="justify-content-center align-content-center d-flex" style="color:#06495f;">
+   
+Whether you're dreaming of a tropical escape, a cultural deep-dive, or a thrilling adventure off the beaten path, our stories and tips are here to guide you. From bustling cityscapes to serene landscapes, we aim to inspire your next journey with every post.
+ So pack your bags, grab your camera, and let's make every travel dream a reality together!</h5><br><br>
+  <div class="row justify-content-center">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/iceland1.jpg')}}" class="card-img-top img-fluid" alt="Iceland">
+          <div class="overlay-text">Iceland</div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/switzerland1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">Switzerland</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/uk1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">United Kingdom</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/usa1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">USA</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/canada1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">Canada</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/japan1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">Japan</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/korea1.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
+          <div class="overlay-text">Korea </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="image-overlay-container">
+          <img src="{{ url_for('static', filename='images/netherland1.jpg')}}" class="card-img-top img-fluid" alt="Netherland">
+          <div class="overlay-text">Netherland</div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>
+<footer class=" text-white mt-4">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <h5>About Raahi</h5>
+        <p>A passionate explorer sharing journeys and experiences from around the globe. Join me to discover new places and cultures.</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Home</a></li>
+          <li><a href="#" class="text-white">Destinations</a></li>
+          <li><a href="#" class="text-white">Blog</a></li>
+          <li><a href="#" class="text-white">About</a></li>
+          <li><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Contact Info</h5>
+        <ul class="list-unstyled">
+          <li>Email: raahi@gmail.com</li>
+          <li>Phone: +91 9526011865</li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-center mt-2">
+        <p>&copy; 2024 Raahi Travel Blog. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
