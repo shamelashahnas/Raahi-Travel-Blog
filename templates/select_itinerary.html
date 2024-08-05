@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if selected_destination %}Itinerary for {{ selected_destination.destination_name }}{% else %}Select Itinerary{% endif %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+          
+            background-image: url('{{ url_for("static", filename="images/raahi_cvr.png") }}') ;
+            background-size: cover;
+            background-repeat: no-repeat;
+           
+            color: #fff;
+        }
+        header {
+            background: rgba(3, 24, 27, 0.6);
+            padding: 20px 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 23px;
+        }
+       
+        .itinerary-day {
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+        .itinerary-day:hover {
+            transform: scale(1.05);
+            background: rgba(112, 36, 36, 0.1);
+        }
+        h2, h3 {
+            color: #bbd4dc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Select Location for Itinerary</h1>
+    </header>
+    <div class="container">
+        <form method="POST" class="mb-4" id="destinationForm">
+            <div class="form-group">
+                <label for="destination">Choose a destination:</label>
+                <select name="destination_id" id="destination" class="form-control" required>
+                    <option value="">-- Select a Destination --</option>
+                    {% for destination in destinations %}
+                    <option value="{{ destination.destination_id }}" {% if selected_destination and selected_destination.destination_id == destination.destination_id %}selected{% endif %}>
+                        {{ destination.destination_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        {% if selected_destination %}
+        <h2 class="text-center">{{ itinerary.description }}</h2>
+        {% if itinerary %}
+            
+            {% if itinerary_days %}
+                {% for day in itinerary_days %}
+                <div class="itinerary-day">
+                    <h3>Day {{ day.day_number }}: {{ day.heading }}</h3>
+                    <p>{{ day.description }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No detailed itinerary available for this destination.</p>
+            {% endif %}
+        {% else %}
+            <p>No itinerary available for this destination.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- JavaScript to auto-submit form -->
+    <script>
+        document.getElementById('destination').addEventListener('change', function() {
+            document.getElementById('destinationForm').submit();
+        });
+    </script>
+</body>
+</html>

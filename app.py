@@ -74,11 +74,20 @@ class Itinerary(db.Model):
     days = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text, nullable=False)
 
+class ItineraryDay(db.Model):
+    __tablename__ = 'itinerary_days'
+    day_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    itinerary_id = db.Column(db.Integer, db.ForeignKey('itineraries.itinerary_id'), nullable=False)
+    day_number = db.Column(db.Integer, nullable=False)
+    heading = db.Column(db.String(200), nullable=False)  # Add heading field
+    description = db.Column(db.Text, nullable=False)
+    itinerary = db.relationship('Itinerary', backref=db.backref('itinerary_days', lazy=True))
+
 class TravelEssentials(db.Model):
     __tablename__ = 'travel_essentials'
     travelessential_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     travelessential_name = db.Column(db.String(100))
-    travelessential_description = db.Column(db.String(100))
+    travelessential_description = db.Column(db.Text, nullable=False)
 
 @app.route('/useradmin', methods=['GET', 'POST'])
 def useradmin():
@@ -188,26 +197,74 @@ def add_image():
         db.session.commit()
     
     return redirect(url_for('dashboard'))
-
 @app.route('/add_itinerary', methods=['POST'])
 def add_itinerary():
-    destination_id = request.form['destination_id']
-    days = request.form['days']
-    description = request.form['description']
+    destination_id = request.form.get('destination_id')
+    days = request.form.get('days')
+    description = request.form.get('description')
+
+    # Validate input
+    if not destination_id or not days or not description:
+        flash('All fields are required', 'danger')
+        return redirect(url_for('select_itinerary'))
+
+    try:
+        days = int(days)
+    except (ValueError, TypeError):
+        flash('Invalid number of days', 'danger')
+        return redirect(url_for('select_itinerary'))
+
+    # Create the new itinerary
     new_itinerary = Itinerary(destination_id=destination_id, days=days, description=description)
     db.session.add(new_itinerary)
     db.session.commit()
-    return redirect(url_for('dashboard'))
 
+    # Add individual day headings and descriptions
+    for i in range(1, days + 1):
+        heading = request.form.get(f'day_{i}_heading')
+        day_description = request.form.get(f'day_{i}_description')
 
-@app.route('/add_travelessential', methods=['POST'])
-def add_travelessential():
-    name = request.form['travelessential_name']
-    description = request.form['travelessential_description']
-    new_travel_essential = TravelEssentials(travelessential_name=name, travelessential_description=description)
-    db.session.add(new_travel_essential)
+        if heading and day_description:
+            new_itinerary_day = ItineraryDay(
+                itinerary_id=new_itinerary.itinerary_id,
+                day_number=i,
+                heading=heading,
+                description=day_description
+            )
+            db.session.add(new_itinerary_day)
+        else:
+            flash(f"Missing details for Day {i}", 'danger')
+            db.session.rollback()
+            return redirect(url_for('select_itinerary'))
+    
     db.session.commit()
+    flash('Itinerary added successfully', 'success')
     return redirect(url_for('dashboard'))
+
+
+@app.route('/add_travel_essential', methods=['POST'])
+def add_travel_essential():
+    essential_name = request.form.get('essential_name')
+    essential_description = request.form.get('essential_description')
+
+    if not essential_name or not essential_description:
+        flash('All fields are required', 'danger')
+        return redirect(url_for('dashboard'))
+
+    try:
+        new_essential = TravelEssentials(
+            travelessential_name=essential_name,
+            travelessential_description=essential_description
+        )
+        db.session.add(new_essential)
+        db.session.commit()
+        flash('Travel essential added successfully!', 'success')
+    except Exception as e:
+        print(f"Error adding travel essential: {e}")
+        flash('Error adding travel essential', 'danger')
+
+    return redirect(url_for('dashboard'))
+
 
 
 @app.route('/dashboard', endpoint='dashboard')
@@ -246,6 +303,35 @@ def blog_detail(blog_id):
     images = Image.query.filter_by(blog_id=blog_id).all()
     
     return render_template('blog.html', blog=blog, subheadings=subheadings, images=images)
+
+
+@app.route('/select_itinerary', methods=['GET', 'POST'])
+def select_itinerary():
+    destinations = Destination.query.all()
+    selected_destination = None
+    itinerary = None
+    itinerary_days = []  # Initialize itinerary_days
+
+    if request.method == 'POST':
+        destination_id = request.form.get('destination_id')
+        selected_destination = Destination.query.get(destination_id)
+        itinerary = Itinerary.query.filter_by(destination_id=destination_id).first()
+        if itinerary:
+            itinerary_days = ItineraryDay.query.filter_by(itinerary_id=itinerary.itinerary_id).order_by(ItineraryDay.day_number).all()
+
+    return render_template(
+        'select_itinerary.html',
+        destinations=destinations,
+        selected_destination=selected_destination,
+        itinerary=itinerary,
+        itinerary_days=itinerary_days
+    )
+@app.route('/travel_essentials')
+def travel_essentials():
+    essentials = TravelEssentials.query.all()  # Fetch all travel essentials from the database
+    return render_template('travel_essentials.html', essentials=essentials)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

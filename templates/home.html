@@ -207,19 +207,14 @@ footer h5 {
             <a class="nav-link" href="{{ url_for('destinations') }}" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Destinations</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Blog</a>
+            <a class="nav-link" href="{{ url_for('select_itinerary') }}" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Itineraries</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">About</a>
+            <a class="nav-link" href="{{ url_for('travel_essentials') }}" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Travel Essentials</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" style="color: rgba(4, 60, 112, 0.772); font-size: 22px; font-weight: 500;">Contact</a>
-          </li>
+         
         </ul>
-        <form class="form-inline my-2 my-lg-0 search-bar">
-          <input class="form-control mr-sm-2"  type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-        </form>
+
       </div>
     </div>
   </nav>
@@ -243,15 +238,9 @@ footer h5 {
               Join me as I traverse the globe, one destination at a time, in search of moments that will leave a lasting imprint on my soul. Together, let's embark on a journey of discovery, connection, and endless exploration. After all, as the saying goes, "Life is a journey, not a destination." So why not make it an extraordinary one?
               <br>Here's to embracing the unknown, chasing dreams, and living life with open arms. Welcome to the world of Raahi!</p>
 <br>
-              <button class="button">
-                <span class="text">READ MORE</span>
-                <div class="overlay">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right">
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
+             
+             
+               
       </div>
       <div class="col-md-5 " style="margin-top: 100px;">
           <img src="{{ url_for('static', filename='images/image2.jpg')}}" class="img-fluid" alt="Raahi">
@@ -278,8 +267,8 @@ footer h5 {
           <img src="{{ url_for('static', filename='images/adventures.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
           <div class="overlay-text">Itineraries</div>
           <div class="overlayy">
-            <div class="text2">Wild Journeys, Memorable Stories</div>
-          </div>
+            <a href="{{ url_for('select_itinerary')}}"><div class="text2">Adventure awaits each day.</div>
+          </div></a>
         </div>
       </div>
     </div>
@@ -289,7 +278,8 @@ footer h5 {
           <img src="{{ url_for('static', filename='images/essential.jpg')}}" class="card-img-top img-fluid" alt="Switzerland">
           <div class="overlay-text">Travel Essentials</div>
           <div class="overlayy">
-            <div class="text2">Essentials for Every Journey</div>
+            <a href="{{ url_for('travel_essentials')}}">
+            <div class="text2">Essentials for Every Journey</div></a>
           </div>
         </div>
       </div>
@@ -307,11 +297,10 @@ footer h5 {
       <div class="col-md-4 mb-3">
         <h5>Quick Links</h5>
         <ul class="list-unstyled">
-          <li><a href="#" class="text-white">Home</a></li>
-          <li><a href="#" class="text-white">Destinations</a></li>
-          <li><a href="#" class="text-white">Blog</a></li>
-          <li><a href="#" class="text-white">About</a></li>
-          <li><a href="#" class="text-white">Contact</a></li>
+          <li><a href="{{ url_for('home') }}" class="text-white">Home</a></li>
+          <li><a href="{{ url_for('destinations') }}" class="text-white">Destinations</a></li>
+          <li><a href="{{ url_for('select_itinerary') }}" class="text-white">Itineraries</a></li>
+          <li><a href="{{ url_for('travel_essentials') }}" class="text-white">Travel Essentials</a></li>
         </ul>
       </div>
       <div class="col-md-4 mb-3">

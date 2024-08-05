@@ -48,7 +48,7 @@
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center mb-4"> raahi</h2>
+        <h2 class="text-center mb-4">Raahi </h2>
         <ul class="nav nav-tabs" id="dashboardTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="destinations-tab" data-toggle="tab" href="#destinations" role="tab" aria-controls="destinations" aria-selected="true">Destinations</a>
@@ -59,7 +59,6 @@
             <li class="nav-item">
                 <a class="nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="false">Images</a>
             </li>
-            
             <li class="nav-item">
                 <a class="nav-link" id="itineraries-tab" data-toggle="tab" href="#itineraries" role="tab" aria-controls="itineraries" aria-selected="false">Itineraries</a>
             </li>
@@ -91,87 +90,83 @@
                     </div>
                 </div>
             </div>
-          <!-- Inside the Blogs Tab -->
-<div class="tab-pane fade" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
-    <div class="card">
-        <div class="card-header">Add New Blog</div>
-        <div class="card-body">
-            <form method="POST" action="/add_blog">
-                <div class="form-group">
-                    <label for="blog_title">Blog Title</label>
-                    <input type="text" class="form-control" id="blog_title" name="blog_title" required>
-                </div>
-                <div class="form-group">
-                    <label for="content">Content</label>
-                    <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="destination_id">Destination</label>
-                    <select class="form-control" id="destination_id" name="destination_id">
-                        <option value="" disabled selected>Select Destination</option>
-                        {% for destination in destinations %}
-                            <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <!-- Subheadings Section -->
-                <div class="form-group">
-                    <label>Subheadings</label>
-                    <div id="subheadings-container">
-                        <div class="subheading-entry">
-                            <input type="text" class="form-control mb-2" name="subheading[]" placeholder="Subheading">
-                            <textarea class="form-control mb-2" name="subheading_description[]" rows="2" placeholder="Subheading Description"></textarea>
-                        </div>
+            
+            <!-- Blogs Tab -->
+            <div class="tab-pane fade" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
+                <div class="card">
+                    <div class="card-header">Add New Blog</div>
+                    <div class="card-body">
+                        <form method="POST" action="/add_blog">
+                            <div class="form-group">
+                                <label for="blog_title">Blog Title</label>
+                                <input type="text" class="form-control" id="blog_title" name="blog_title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Content</label>
+                                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="destination_id">Destination</label>
+                                <select class="form-control" id="destination_id" name="destination_id">
+                                    <option value="" disabled selected>Select Destination</option>
+                                    {% for destination in destinations %}
+                                        <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Subheadings</label>
+                                <div id="subheadings-container">
+                                    <div class="subheading-entry">
+                                        <input type="text" class="form-control mb-2" name="subheading[]" placeholder="Subheading">
+                                        <textarea class="form-control mb-2" name="subheading_description[]" rows="2" placeholder="Subheading Description"></textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary" onclick="addSubheading()">+</button>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Blog</button>
+                        </form>
                     </div>
-                    <button type="button" class="btn btn-secondary" onclick="addSubheading()">+</button>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Add Blog</button>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Images Tab -->
-<div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-    <div class="card">
-        <div class="card-header">Add New Image</div>
-        <div class="card-body">
-            <form method="POST" action="/add_image" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="image_file">Image File</label>
-                    <input type="file" class="form-control-file" id="image_file" name="image_file" required>
+            </div>
+            
+            <!-- Images Tab -->
+            <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                <div class="card">
+                    <div class="card-header">Add New Image</div>
+                    <div class="card-body">
+                        <form method="POST" action="/add_image" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="image_file">Image File</label>
+                                <input type="file" class="form-control-file" id="image_file" name="image_file" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="image_description">Description</label>
+                                <textarea class="form-control" id="image_description" name="image_description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="associated_blog">Associated Blog</label>
+                                <select class="form-control" id="associated_blog" name="associated_blog">
+                                    <option value="" disabled selected>Select the Blog</option>
+                                    {% for blog in blogs %}
+                                        <option value="{{ blog.blog_id }}">{{ blog.blog_title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="associated_destination">Associated Destination</label>
+                                <select class="form-control" id="associated_destination" name="associated_destination">
+                                    <option value="" disabled selected>Select the Destination</option>
+                                    {% for destination in destinations %}
+                                        <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Image</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="image_description">Description</label>
-                    <textarea class="form-control" id="image_description" name="image_description" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="associated_blog">Associated Blog</label>
-                    <select class="form-control" id="associated_blog" name="associated_blog">
-                        <option value="" disabled selected>Select the Blog</option>
-                        {% for blog in blogs %}
-                        
-                            <option value="{{ blog.blog_id }}">{{ blog.blog_title }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="associated_destination">Associated Destination</label>
-                    <select class="form-control" id="associated_destination" name="associated_destination">
-                        <option value="" disabled selected>Select the Destination</option>
-                        {% for destination in destinations %}
-                          
-                            <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Image</button>
-            </form>
-        </div>
-    </div>
-</div>
-
+            </div>
 
             <!-- Itineraries Tab -->
             <div class="tab-pane fade" id="itineraries" role="tabpanel" aria-labelledby="itineraries-tab">
@@ -182,10 +177,10 @@
                             <div class="form-group">
                                 <label for="destination_id_itinerary">Destination</label>
                                 <select class="form-control" id="destination_id_itinerary" name="destination_id">
+                                    <option value="" disabled selected>Select the Destination</option>
                                     {% for destination in destinations %}
-                                    <option value="">Select the Destination</option>
-                                    <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
-                                {% endfor %}
+                                        <option value="{{ destination.destination_id }}">{{ destination.destination_name }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
@@ -193,51 +188,81 @@
                                 <input type="number" class="form-control" id="days" name="days" required>
                             </div>
                             <div class="form-group">
-                                <label for="description_itinerary">Description</label>
-                                <textarea class="form-control" id="description_itinerary" name="description" rows="3" required></textarea>
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" name="description" required></textarea>
+                            </div>
+                            
+                            <div id="itinerary-days-container">
+                                <!-- Day fields will be dynamically added here -->
                             </div>
                             <button type="submit" class="btn btn-primary">Add Itinerary</button>
                         </form>
                     </div>
                 </div>
             </div>
+
             <!-- Travel Essentials Tab -->
-            <div class="tab-pane fade" id="travelessentials" role="tabpanel" aria-labelledby="travelessentials-tab">
-                <div class="card">
-                    <div class="card-header">Add New Travel Essential</div>
-                    <div class="card-body">
-                        <form method="POST" action="/add_travelessential">
-                            <div class="form-group">
-                                <label for="travelessential_name">Travel Essential Name</label>
-                                <input type="text" class="form-control" id="travelessential_name" name="travelessential_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="travelessential_description">Description</label>
-                                <textarea class="form-control" id="travelessential_description" name="travelessential_description" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Add Travel Essential</button>
-                        </form>
-                    </div>
+            <!-- Travel Essentials Tab -->
+<div class="tab-pane fade" id="travelessentials" role="tabpanel" aria-labelledby="travelessentials-tab">
+    <div class="card">
+        <div class="card-header">Add New Travel Essential</div>
+        <div class="card-body">
+            <form method="POST" action="/add_travel_essential">
+                <div class="form-group">
+                    <label for="essential_name">Essential Name</label>
+                    <input type="text" class="form-control" id="essential_name" name="essential_name" required>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="essential_description">Description</label>
+                    <textarea class="form-control" id="essential_description" name="essential_description" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Essential</button>
+            </form>
+        </div>
+    </div>
+</div>
+
         </div>
     </div>
     <script>
+        document.getElementById('days').addEventListener('input', function() {
+            const days = this.value;
+            const container = document.getElementById('itinerary-days-container');
+            container.innerHTML = ''; // Clear previous fields
+
+            for (let i = 1; i <= days; i++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('card', 'mb-3');
+                dayDiv.innerHTML = `
+                    <div class="card-header">Day ${i}</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="day_${i}_heading">Heading</label>
+                            <input type="text" class="form-control" id="day_${i}_heading" name="day_${i}_heading" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="day_${i}_description">Description</label>
+                            <textarea class="form-control" id="day_${i}_description" name="day_${i}_description" rows="3" required></textarea>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(dayDiv);
+            }
+        });
+
         function addSubheading() {
-            var container = document.getElementById('subheadings-container');
-            var entry = document.createElement('div');
-            entry.classList.add('subheading-entry');
-            entry.innerHTML = `
+            const container = document.getElementById('subheadings-container');
+            const subheadingDiv = document.createElement('div');
+            subheadingDiv.classList.add('subheading-entry');
+            subheadingDiv.innerHTML = `
                 <input type="text" class="form-control mb-2" name="subheading[]" placeholder="Subheading">
                 <textarea class="form-control mb-2" name="subheading_description[]" rows="2" placeholder="Subheading Description"></textarea>
             `;
-            container.appendChild(entry);
+            container.appendChild(subheadingDiv);
         }
     </script>
-    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
 </body>
 </html>
